@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+data/anatem.dta
+.DS_Store
