@@ -34,7 +34,7 @@ city <- raw %>%
   filter(!is.na(source)) %>% 
   filter(source != "") %>% 
   filter(!is.na(latitude) & !is.na(longitude) & !is.na(city_pop)) %>% 
-  select(c(city, country, latitude, longitude, year, city_pop, source)) %>% 
+  dplyr::select(c(city, country, latitude, longitude, year, city_pop, source)) %>% 
   group_by(city, country, latitude, longitude) %>%
   mutate(city_id = cur_group_id()) %>%
   ungroup() %>%
@@ -53,7 +53,7 @@ italy <- ne_countries(scale = "large") %>%
   st_as_sf() %>% 
   st_transform(crs = 5643) %>% 
   filter(sovereignt == "Italy") %>% 
-  select(sovereignt)
+  dplyr::select(sovereignt)
 
 
 dim_m <- 50000
@@ -64,7 +64,7 @@ sf_grid <- italy %>%
                square = FALSE) %>% 
   st_as_sf() %>% 
   mutate(grid_id = row_number()) %>% 
-  select(grid_id)
+  dplyr::select(grid_id)
 
 sf_grid <- sf_grid %>% 
   st_intersection(italy)
