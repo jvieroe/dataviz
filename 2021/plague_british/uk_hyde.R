@@ -187,7 +187,7 @@ ggplot() +
 # 
 ggsave(plot = last_plot(),
        filename = "2021/plague_british/black-death_british.png",
-       dpi = 320, scale = 1, width = 6, height = 6, units = c("in"))
+       dpi = 320, scale = 1, width = 5, height = 6, units = c("in"))
 # knitr::plot_crop("2021/plague_british/black-death_british.png",
 #                  quiet = T)
 
