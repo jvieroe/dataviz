@@ -11,9 +11,12 @@ origo <- tribble(~lat, ~lon,
            crs = 4326)
 
 map_sf <- ne_countries(scale = "large") %>% 
-  st_as_sf() %>%
-  #filter(admin == "Cameroon") %>% 
+  st_as_sf() %>% 
+  filter(admin != "Antarctica") %>% 
   select(admin)
+
+ggplot(data = map_sf) +
+  geom_sf()
 
 grid_sf <- map_sf %>% 
   st_make_grid(.,
@@ -25,7 +28,9 @@ grid_sf <- map_sf %>%
 grid_sf <- grid_sf %>%  
   st_intersection(map_sf)
 
-centroids <- grid_sf %>% 
+grid_sf2 <- grid_sf %>% st_make_valid()
+
+centroids <- grid_sf2 %>% 
   st_centroid()
 
 dist <- st_distance(centroids,
@@ -35,10 +40,13 @@ grid_sf <- grid_sf %>%
   mutate(dist = dist) %>% 
   mutate(dist = parse_number(as.character(dist)))
 
+grid_sf <- grid_sf %>% 
+  select(-admin)
 
 ggplot() +
   geom_sf(data = grid_sf, aes(fill = dist),
-          color = "white", size = .1)
+          color = "white", size = .1) +
+  scale_fill_viridis_c(direction = -1)
 
 
 
