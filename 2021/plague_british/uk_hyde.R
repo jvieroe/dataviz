@@ -173,8 +173,7 @@ ggplot() +
         panel.background = element_rect(fill = "gray15",
                                         color = NA),
         plot.background = element_rect(fill = "gray15",
-                                       color = NA),
-        plot.margin = grid::unit(c(t = 0, r = 30, b = 5, l = 5), "mm")) +
+                                       color = NA)) +
   guides(fill = guide_colorbar(barwidth = 15,
                                barheight = .5,
                                ticks = FALSE,
