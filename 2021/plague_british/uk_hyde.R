@@ -173,8 +173,7 @@ ggplot() +
         panel.background = element_rect(fill = "gray15",
                                         color = NA),
         plot.background = element_rect(fill = "gray15",
-                                       color = NA),
-        plot.margin = grid::unit(c(t = 0, r = 20, b = 5, l = 5), "mm")) +
+                                       color = NA)) +
   guides(fill = guide_colorbar(barwidth = 15,
                                barheight = .5,
                                ticks = FALSE,
@@ -184,7 +183,7 @@ ggplot() +
                                                           family = "Cinzel",
                                                           size = 7)))
 
-
+# plot.margin = grid::unit(c(t = 0, r = 20, b = 5, l = 5), "mm")
 ggsave(plot = last_plot(),
        filename = "2021/plague_british/black-death_british.png")
 # knitr::plot_crop("2021/plague_british/black-death_british.png",
