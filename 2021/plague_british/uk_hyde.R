@@ -184,6 +184,13 @@ ggplot() +
                                                           size = 7)))
 
 
+# plot.margin = grid::unit(c(t = 0, r = 30, b = 5, l = 5), "mm")
+
+ggsave(plot = last_plot(),
+       filename = "2021/plague_british/black-death_british.png")
+knitr::plot_crop("2021/plague_british/black-death_british.png",
+                 quiet = T)
+
 ggsave(plot = last_plot(),
        filename = "2021/plague_british/black-death_british.svg")
 
