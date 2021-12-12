@@ -13,8 +13,7 @@ origo <- tribble(~lat, ~lon,
 map_sf <- ne_countries(scale = "large") %>% 
   st_as_sf() %>% 
   filter(admin != "Antarctica") %>% 
-  st_union()
-  #select(admin)
+  select(admin)
 
 ggplot(data = map_sf) +
   geom_sf()
@@ -47,7 +46,8 @@ grid_sf <- grid_sf %>%
 ggplot() +
   geom_sf(data = grid_sf, aes(fill = dist),
           color = "white", size = .1) +
-  scale_fill_viridis_c(direction = -1)
+  scale_fill_viridis_c(direction = -1) +
+  theme_void()
 
 
 
