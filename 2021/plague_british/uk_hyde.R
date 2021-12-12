@@ -19,6 +19,9 @@ library(tmap)
 library(rnaturalearth)
 library(rnaturalearthhires)
 library(raster)
+library(sysfonts)
+library(showtext)
+library(svglite)
 
 #tmap_mode("view")
 
@@ -137,9 +140,6 @@ grid_sf <- grid_sf %>%
                       (delta/hyde13)*100))
 
 
-library(sysfonts)
-library(showtext)
-
 
 #font_add_google("Roboto", "roboto")
 
@@ -185,7 +185,8 @@ ggplot() +
                                                           size = 7)))
 
 
-ggsave()
+ggsave(plot = last_plot(),
+       filename = "2021/plague_british/black-death_british.svg")
 
 
 
