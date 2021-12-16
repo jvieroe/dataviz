@@ -7,9 +7,6 @@ sl_table <- tm_matchday_table(country_name = "Denmark",
                               matchday = seq(1:17)) %>% 
   clean_names()
 
-# sl_table <- sl_table %>% 
-#   mutate(squad2 = squad)
-
 sl_table <- sl_table %>% 
   mutate(squad = gsub("ö", "ø", squad)) %>% 
   mutate(squad = gsub("ae", "æ", squad))
@@ -20,7 +17,6 @@ temp <- sl_table %>%
                 ~ 0)) %>% 
   arrange(squad) %>% 
   mutate(rk = row_number())
-
 
 plot_df <- rbind(temp,
                  sl_table)
@@ -72,23 +68,4 @@ ggplot() +
 ggsave(plot = last_plot(),
        filename = "2021/superliga/accumulated_points.png",
        dpi = 320, scale = 1, width = 7, height = 6, units = c("in"))
-
-
-
-
-
-# scale_color_manual(values = c("#bf0d0d", "#f6f6f9", "#FDEB4F", "#ffffff", "#CE2C24",
-#                               "gray60", "gray70", "gray80", "gray90", "blue",
-#                               "red", "green")) +
-# 
-# 
-# x <- c("206 44 36")
-# 
-# sapply(strsplit(x, " "), function(x)
-#   rgb(x[1], x[2], x[3], maxColorValue=255))
-# 
-
-
-
-
 
