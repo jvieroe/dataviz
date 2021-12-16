@@ -37,7 +37,7 @@ ggplot() +
   facet_wrap(~ squad, scales = "fixed") +
   labs(title = "Cumulative points in the Danish Superliga",
        subtitle = "Accumulated points over time (round 0 to 17) in the fall of 2021",
-       x = "Runde",
+       x = "Round",
        y = "Points (total)",
        caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: Transfermarkt (accessed via the worldfootballR package)") +
   theme_minimal() +
