@@ -32,33 +32,20 @@ match_ps <- st_join(ps,
                   dagi_id,
                   ps_id))
 
-match_ps <- match_ps %>% 
-  left_join(.,
-            index,
-            by = "dagi_id")
 
-
-
-
-
-
-
+rm(ps, kommuner)
 
 vs <- rio::import("2021/kv2021/Valgdata_valgsteder.csv")
 
+vs <- vs %>% 
+  left_join(.,
+            match_ps,
+            by = c("ValgstedId" = "ps_id"))
 
 
-index <- ps %>% 
-  st_drop_geometry() %>% 
-  dplyr::select(c(dagi_id,
-           ps_id))
+test <- vs %>% 
+  filter(is.na(navn))
 
-
-
-
-table(is.na(match_ps$ps_id.y))
-
-rm(kommuner, ps)
 
 
 
