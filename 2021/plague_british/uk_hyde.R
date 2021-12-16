@@ -1,12 +1,6 @@
-# https://www.r-bloggers.com/2021/03/simplifying-geospatial-features-in-r-with-sf-and-rmapshaper/
-# https://www.envidat.ch/#/metadata/digitizing-historical-plague
-
 # -------------------------------------------------------------
 # preliminaries
 # -------------------------------------------------------------
-
-rm(list = ls())
-#devtools::install_github("ropensci/rnaturalearthhires") 
 
 library(rio)
 library(haven)
@@ -23,7 +17,6 @@ library(sysfonts)
 library(showtext)
 library(svglite)
 
-#tmap_mode("view")
 
 # -------------------------------------------------------------
 # load data
@@ -36,25 +29,6 @@ map_sf <- ne_countries(scale = "large") %>%
   filter(admin == "United Kingdom" | admin == "Ireland") %>% 
   #filter(admin == "Italy") %>% 
   dplyr::select(admin)
-
-ggplot() + 
-  geom_sf(data = map_sf)
-
-# class(map_sf$geometry)
-# 
-# map_sf <- map_sf %>%
-#   st_simplify(dTolerance = 2500) %>% 
-#   st_as_sf() %>% 
-#   st_cast("MULTIPOLYGON")
-# 
-# class(map_sf$geometry)
-# 
-# ggplot() + 
-#   geom_sf(data = map_sf)
-
-
-# ----- x
-
 
 
 # ----- grid data
@@ -79,16 +53,6 @@ map_sf <- map_sf %>%
 grid_sf <- grid_sf %>% 
   st_transform(crs = 4326)
 
-ggplot() + 
-  geom_sf(data = grid_sf, aes(fill = grid_id),
-          color = "white",
-          size = .1) +
-  geom_sf(data = map_sf,
-          fill = "transparent")
-
-st_crs(grid_sf)
-st_crs(map_sf)
-
 
 
 # ----- raster data
@@ -103,8 +67,6 @@ hyde_fun <- function(hyde, hyde_fixed) {
   hyde <- crop(hyde, extent(grid_sf))
   hyde <- mask(hyde, grid_sf)
   
-  #hyde_fixed <- projectRaster(hyde, crs = CRS('+init=EPSG:5643'))
-  
   hyde_fixed <- extract(hyde, grid_sf)
   
   return(hyde_fixed)
@@ -114,7 +76,6 @@ hyde_fun <- function(hyde, hyde_fixed) {
 
 fix_list <- map(hyde_list,
                 hyde_fun)
-
 
 
 hyde13 <- fix_list[[1]]
@@ -141,9 +102,6 @@ grid_sf <- grid_sf %>%
 
 
 
-#font_add_google("Roboto", "roboto")
-
-
 ggplot() + 
   geom_sf(data = grid_sf, aes(fill = delta),
           color = "white",
@@ -154,9 +112,9 @@ ggplot() +
           color = "white",
           size = .01,
           fill = "transparent") +
-  labs(title = "The Black Death on the British Isles",
-       subtitle = "Net population loss (thousands), 1300 - 1400",
-       caption = "Data: HYDE 3.2\nGraphics: Jeppe Vierø (@Vieroe)") +
+  labs(title = "The Black Death on the \nBritish Isles",
+       subtitle = "Net population loss (k), 1300 - 1400",
+       caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: HYDE 3.2") +
   theme_void() +
   theme(legend.position = "bottom",
         plot.title = element_text(color = "white",
@@ -187,21 +145,8 @@ ggplot() +
 
 ggsave(plot = last_plot(),
        filename = "2021/plague_british/black-death_british.png",
-       dpi = 320, scale = 1, width = 6, height = 6, units = c("in"))
-# knitr::plot_crop("2021/plague_british/black-death_british.png",
-#                  quiet = T)
-
-
-ggsave(plot = last_plot(),
-       filename = "2021/plague_british/black-death_british.pdf")
-
-ggsave(plot = last_plot(),
-       filename = "2021/plague_british/black-death_british.svg")
+       dpi = 320, scale = 1, width = 4.5, height = 6, units = c("in"))
 
 
 
-
-
-
-
-
+# https://www.envidat.ch/#/metadata/digitizing-historical-plague
