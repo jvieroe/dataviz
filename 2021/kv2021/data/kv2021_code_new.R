@@ -26,13 +26,21 @@ rm(geo)
 
 
 
-vs <- vs %>% 
-  select(kv2017_gyldige_stemmer,
-         kv2017_a,
-         kommune_navn)
+# vs <- vs %>% 
+#   select(kv2017_gyldige_stemmer,
+#          kv2017_a,
+#          kommune_navn)
 
 
 
+plot_df <- vs %>% 
+  group_by(storkreds_navn, kommune_navn) %>% 
+  summarize(socdem = sum(kv2017_a),
+            total = sum(kv2017_gyldige_stemmer)) %>% 
+  ungroup() %>% 
+  mutate(share = socdem / total)
 
-
-
+plot_df <- plot_df %>% 
+  arrange(storkreds_navn,
+          kommune_navn,
+          share)
