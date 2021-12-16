@@ -184,6 +184,7 @@ ggplot() +
                                                           family = "Cinzel",
                                                           size = 7)))
 
+
 ggsave(plot = last_plot(),
        filename = "2021/plague_british/black-death_british.png",
        dpi = 320, scale = 1, width = 6, height = 6, units = c("in"))

@@ -1,4 +1,3 @@
-
 library(tidyverse)
 library(worldfootballR)
 library(janitor)
@@ -41,38 +40,38 @@ ggplot() +
             size = 0.75) + 
   facet_wrap(~ squad, scales = "fixed") +
   labs(title = "Cumulative points in the Danish Superliga",
-       subtitle = "Accumulated points over time (round 1 to 17) in the fall of 2021",
+       subtitle = "Accumulated points over time (round 0 to 17) in the fall of 2021",
        x = "Runde",
        y = "Points (total)",
-       caption = "Data: Transfermarkt accessed via the worldfootballR package \nGraphics: Jeppe Vierø (@Vieroe)") +
+       caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: Transfermarkt (accessed via the worldfootballR package)") +
   theme_minimal() +
   theme(plot.background = element_rect(color = "gray14", fill = "gray14"),
         panel.background = element_rect(color = "gray14", fill = "gray14"),
         panel.grid.major = element_line(color = "gray40", size = .1),
         panel.grid.minor = element_blank(),
         axis.text = element_text(color = "gray70",
-                                 family = "Roboto"),
+                                 family = "Montserrat"),
         axis.title.x = element_text(color = "white",
-                                  family = "Roboto",
+                                  family = "Montserrat",
                                   margin = ggplot2::margin(t = 20, r = 0, b = 0, l = 0)),
         axis.title.y = element_text(color = "white",
-                                  family = "Roboto",
+                                  family = "Montserrat",
                                   margin = ggplot2::margin(t = 0, r = 20, b = 0, l = 0)),
         strip.text = element_text(color = "white",
-                                  family = "Roboto"),
+                                  family = "Montserrat"),
         plot.title = element_text(color = "white",
                                   size = 20,
-                                  family = "Roboto"),
+                                  family = "Montserrat"),
         plot.subtitle = element_text(color = "white",
-                                     family = "Roboto"),
+                                     family = "Montserrat"),
         plot.caption = element_text(color = "gray70",
-                                       family = "Roboto"),
+                                       family = "Montserrat"),
         legend.position = "none")
 
 
 ggsave(plot = last_plot(),
-       filename = "2021/plague_british/black-death_british.png",
-       dpi = 320, scale = 1, width = 6, height = 6, units = c("in"))
+       filename = "2021/superliga/accumulated_points.png",
+       dpi = 320, scale = 1, width = 7, height = 6, units = c("in"))
 
 
 
