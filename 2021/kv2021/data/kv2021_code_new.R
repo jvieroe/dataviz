@@ -1,5 +1,3 @@
-rm(list = ls())
-
 library(tidyverse)
 library(sf)
 library(janitor)
@@ -90,7 +88,6 @@ ggplot(data = plot_df) +
   geom_point(aes(x = x,
                  y = share,
                  color = regionsnavn),
-             alpha = 0.75,
              position = position_dodge(width = .5)) +
   geom_line(aes(x = x,
                 y = grp_share,
