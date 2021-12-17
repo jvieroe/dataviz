@@ -8,7 +8,7 @@ repo for various #dataviz projects
 
 <b> Code </b>: <a href="https://github.com/jvieroe/dataviz/blob/main/2021/kv2021/kv2021_code.R"> see here </a>
 
-<img src="https://github.com/jvieroe/dataviz/blob/main/2021/kv2021/black-2017_partyplot_V.png?raw=true" alt="" width="750">
+<img src="https://github.com/jvieroe/dataviz/blob/main/2021/kv2021/2017_partyplot_V.png?raw=true" alt="" width="750">
 
 
 ## The Black Death on the British Isles
