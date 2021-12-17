@@ -126,8 +126,8 @@ ggplot(data = plot_df) +
         panel.grid.minor.x = element_blank(),
         panel.grid.major.y = element_line(color = "gray50", size = .3),
         panel.grid.minor.y = element_line(color = "gray50", size = .1),
-        plot.background = element_rect(color = "gray18", fill = "gray18"),
-        panel.background = element_rect(color = "gray18", fill = "gray18"),
+        plot.background = element_rect(color = "#0E1116", fill = "#0E1116"),
+        panel.background = element_rect(color = "#0E1116", fill = "#0E1116"),
         legend.position = "bottom")
 
 
@@ -135,3 +135,8 @@ ggplot(data = plot_df) +
 ggsave(plot = last_plot(),
        filename = "2021/kv2021/2017_partyplot_V.png",
        dpi = 320, scale = 1, width = 7, height = 6, units = c("in"))
+
+
+x <- c("14 17 22")
+sapply(strsplit(x, " "), function(x)
+  rgb(x[1], x[2], x[3], maxColorValue=255))
