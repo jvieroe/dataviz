@@ -134,7 +134,7 @@ ggplot(data = plot_df) +
 
 ggsave(plot = last_plot(),
        filename = "2021/kv2021/2017_partyplot_V.png",
-       dpi = 320, scale = 1, width = 7, height = 6, units = c("in"))
+       dpi = 320, scale = 1, width = 9, height = 6, units = c("in"))
 
 
 x <- c("14 17 22")
