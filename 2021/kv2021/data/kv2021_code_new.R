@@ -87,8 +87,7 @@ font <- "Raleway"
 ggplot(data = plot_df) +
   geom_point(aes(x = x,
                  y = share,
-                 color = regionsnavn),
-             position = position_dodge(width = .5)) +
+                 color = regionsnavn)) +
   geom_line(aes(x = x,
                 y = grp_share,
                 color = regionsnavn),
@@ -102,7 +101,7 @@ ggplot(data = plot_df) +
   scale_color_manual(values = c("indianred3", "steelblue3", "springgreen3", "yellow3", "violetred3"),
                      name = "") +
   labs(y = "Vote Share",
-       title = "Vote share for Venstre by municipality",
+       title = "Vote share for Venstre by municipality (2017)",
        subtitle = "Venstre's worst regional result was in <span style='color:indianred3'>Region Hovedstaden</span> where they received only <span style='color:indianred3'>16%</span> of the votes. <br> Their best regional result was in <span style='color:steelblue3'>Region Midtjylland</span> with a share more than twice as large (<span style='color:steelblue3'>33%</span>)",
        color = "",
        caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: The Danish Election Database") +
