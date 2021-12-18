@@ -149,4 +149,5 @@ ggsave(plot = last_plot(),
 
 
 
+
 # https://www.envidat.ch/#/metadata/digitizing-historical-plague
