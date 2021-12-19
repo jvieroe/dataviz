@@ -83,8 +83,3 @@ ggsave(plot = last_plot(),
 
 
 
-ggplot(data = sl, aes(x = `Minutes played`, y = Goals)) +
-  geom_point() +
-  geom_smooth(method = "lm")
-
-
