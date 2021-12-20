@@ -1,9 +1,8 @@
-rm(list=ls())
-
 library(tidyverse)
 library(magrittr)
 library(rvest)
 library(janitor)
+library(ggtext)
 
 # /////////////// CREATE SEASON INDEX ///////////////
 index <- tibble(
@@ -147,37 +146,94 @@ plot_df_both <- table_summarized %>%
   filter(!season_long %in% c("2002/2003", "2003/2004", "2021/2022"))
 
 
-
 # check
 plot_df_both %>% filter(season_long == "2011/2012") %>% pull(pct_both)
 plot_df_mr %>% filter(season_long == "2011/2012") %>% pull(pct_player)
 
-font <- "Architects Daughter"
+
+
+# /////////////// SAVE ///////////////
+saveRDS(plot_df_both,
+        "2021/messi_ronaldo/plot_df_both.rds")
+
+saveRDS(plot_df_mr,
+        "2021/messi_ronaldo/plot_df_mr.rds")
+
+
+
+# /////////////// LOAD ///////////////
+plot_df_both <- readRDS("2021/messi_ronaldo/plot_df_both.rds")
+
+plot_df_mr <- readRDS("2021/messi_ronaldo/plot_df_mr.rds")
+
+
+
+font <- "Ubuntu Mono"
+col_messi <- "#a50044"
+col_ronaldo <- "#00529f"
+
+#font <- "Architects Daughter"
 
 ggplot() +
-  geom_line(data = plot_df_both,
-            aes(x = season_short,
-                y = pct_both,
-                group = 1),
-            size = 3,
-            alpha = .85) +
-  geom_line(data = plot_df_mr,
-            aes(x = season_short,
-                y = pct_player,
-                group = player,
-                color = player),
+  geom_line(data = plot_df_both, aes(x = season_short, y = pct_both, group = 1),
+            color = "#ffbf00", size = 3, alpha = .5) +
+  geom_line(data = plot_df_mr, aes(x = season_short, y = pct_player,
+                                   group = player, color = player),
             size = 1) +
-  scale_y_continuous(labels = scales::percent_format(),
-                     limits = c(0, .10)) +
-  labs(x = "Season",
-       y = "Share of Total League Goals",
-       title = "xx",
+  scale_y_continuous(labels = scales::percent_format(), limits = c(0, .10)) +
+  scale_color_manual(values = c("#a50044", "#00529f")) +
+  labs(x = "Season", y = "Share of Total League Goals",
+       title = "Share of LaLiga goals scored by <span style='color:#a50044'>Messi</span> and <span style='color:#00529f'>Ronaldo</span>",
        subtitle = "xxx",
        caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: Transfermarkt") +
+  # Messi joins
+  geom_curve(aes(x = 1, xend = 1.3,
+                 y = 0.005, yend = 0.019),
+             color = "gray90",
+             curvature = -0.35,
+             arrow = arrow(length = unit(0.02, "npc")),
+             arrow.fill = "white") +
+  annotate("label", x = 2, y = .025,
+           label = "Messi makes his\nLaLiga debut",
+           family = font,
+           size = 3,
+           color = "white",
+           fill = "#a50044", alpha = .3) +
+  # Ronaldo joins
+  geom_curve(aes(x = 6, xend = 7,
+                 y = 0.025, yend = 0.017),
+             color = "gray90",
+             curvature = -0.35,
+             arrow = arrow(length = unit(0.02, "npc")),
+             arrow.fill = "white") +
+  annotate("label", x = 7, y = .011,
+           label = "Ronaldo joins Real Madrid",
+           family = font,
+           size = 3,
+           color = "white",
+           fill = "#00529f", alpha = .3) +
+  # Peak 1
+  geom_curve(aes(x = 8, xend = 5,
+                 y = 0.0915, yend = 0.0915),
+             color = "gray90",
+             curvature = 0.45,
+             arrow = arrow(length = unit(0.02, "npc")),
+             arrow.fill = "white") +
+  annotate("label", x = 4, y = .0815,
+           label = "In the 2011/12 season, Messi\nand Ronaldo combined for a\ntotal of 96 LaLiga goals,\n9% of all goals scored that season",
+           family = font,
+           size = 3,
+           color = "white",
+           fill = "#ffbf00", alpha = .3) +
+  # theme stuff
   theme_minimal() +
-  theme(legend.position = "none",
-        panel.background = element_rect(fill = "gray18", color = "gray18"),
-        plot.background = element_rect(fill = "gray18", color = "gray18"),
+  theme(plot.title = ggtext::element_markdown(color = "white"),
+        plot.subtitle = ggtext::element_markdown(color = "white"),
+        plot.caption = element_text(color = "gray90",
+                                    family = font),
+        legend.position = "none",
+        panel.background = element_rect(fill = "gray30", color = "gray30"),
+        plot.background = element_rect(fill = "gray30", color = "gray30"),
         panel.grid.minor = element_blank(),
         panel.grid.major = element_line(color = "gray70",
                                         size = .25),
@@ -193,35 +249,10 @@ ggplot() +
                                    family = font))
 
 
-  theme_minimal() +
-  theme(axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.text.y = element_text(color = "gray90",
-                                   family = font),
-        axis.title.y = element_text(color = "gray90",
-                                    family = font,
-                                    margin = ggplot2::margin(t = 0, r = 20, b = 0, l = 0)),
-        legend.text = element_text(color = "gray90",
-                                   family = font),
-        plot.title = element_text(color = "white",
-                                  size = 20,
-                                  family = font),
-        plot.subtitle = ggtext::element_markdown(color = "white",
-                                                 family = font),
-        plot.caption = element_text(color = "gray70",
-                                    family = font),
-        panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank(),
-        panel.grid.major.y = element_line(color = "gray50", size = .3),
-        panel.grid.minor.y = element_line(color = "gray50", size = .1),
-        plot.background = element_rect(color = "#0E1116", fill = "#0E1116"),
-        panel.background = element_rect(color = "#0E1116", fill = "#0E1116"),
-        legend.position = "bottom")
-
 
 
 ggsave(plot = last_plot(),
-       filename = "2021/kv2021/2017_partyplot_V.png",
+       filename = "2021/messi_ronaldo/mr_plot.png",
        dpi = 320, scale = 1, width = 9, height = 6, units = c("in"))
 
 
