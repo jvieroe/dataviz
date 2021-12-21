@@ -144,7 +144,7 @@ ggplot() +
 
 
 ggsave(plot = last_plot(),
-       filename = "2021/plague_british/black-death_british.png",
+       filename = "2021/plague_british/plot.png",
        dpi = 320, scale = 1, width = 4.5, height = 6, units = c("in"))
 
 
