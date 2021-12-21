@@ -169,6 +169,7 @@ plot_df_mr <- readRDS("2021/messi_ronaldo/plot_df_mr.rds")
 
 
 font <- "Ubuntu Mono"
+col_both <- "#ffbf00"
 col_messi <- "#a50044"
 col_ronaldo <- "#00529f"
 
@@ -176,19 +177,24 @@ col_ronaldo <- "#00529f"
 
 ggplot() +
   geom_line(data = plot_df_both, aes(x = season_short, y = pct_both, group = 1),
-            color = "#ffbf00", size = 3, alpha = .5) +
+            color = col_both, size = 2, alpha = .5) +
+  geom_point(data = plot_df_both, aes(x = season_short, y = pct_both),
+             color = col_both, size = 3, alpha = 1) +
   geom_line(data = plot_df_mr, aes(x = season_short, y = pct_player,
                                    group = player, color = player),
             size = 1) +
+  geom_point(data = plot_df_mr, aes(x = season_short, y = pct_player,
+                                    color = player),
+             size = 2) +
   scale_y_continuous(labels = scales::percent_format(), limits = c(0, .10)) +
-  scale_color_manual(values = c("#a50044", "#00529f")) +
+  scale_color_manual(values = c(col_messi, col_ronaldo)) +
   labs(x = "Season", y = "Share of Total League Goals",
        title = "Share of LaLiga goals scored by <span style='color:#a50044'>Messi</span> and <span style='color:#00529f'>Ronaldo</span>",
        subtitle = "xxx",
        caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: Transfermarkt") +
   # Messi joins
-  geom_curve(aes(x = 1, xend = 1.3,
-                 y = 0.005, yend = 0.019),
+  geom_curve(aes(x = 0.9, xend = 1.3,
+                 y = 0.004, yend = 0.019),
              color = "gray90",
              curvature = -0.35,
              arrow = arrow(length = unit(0.02, "npc")),
@@ -198,7 +204,7 @@ ggplot() +
            family = font,
            size = 3,
            color = "white",
-           fill = "#a50044", alpha = .3) +
+           fill = col_messi, alpha = .3) +
   # Ronaldo joins
   geom_curve(aes(x = 6, xend = 7,
                  y = 0.025, yend = 0.017),
@@ -211,7 +217,7 @@ ggplot() +
            family = font,
            size = 3,
            color = "white",
-           fill = "#00529f", alpha = .3) +
+           fill = col_ronaldo, alpha = .3) +
   # Peak 1
   geom_curve(aes(x = 8, xend = 5,
                  y = 0.0915, yend = 0.0915),
