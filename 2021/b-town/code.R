@@ -47,7 +47,7 @@ ggdraw(ggp) +
              color = "dodgerblue4")
 
 ggsave(plot = last_plot(),
-       filename = "2021/b-town/b-town_plot.png",
+       filename = "2021/b-town/plot.png",
        dpi = 1000, scale = 1, width = 7, height = 7, units = c("in"))
 
 
