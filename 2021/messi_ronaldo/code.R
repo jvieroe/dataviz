@@ -325,7 +325,7 @@ ggplot() +
 
 
 ggsave(plot = last_plot(),
-       filename = "2021/messi_ronaldo/mr_plot.png",
+       filename = "2021/messi_ronaldo/plot.png",
        dpi = 320, scale = 1, width = 9, height = 6, units = c("in"))
 
 
