@@ -78,7 +78,7 @@ ggplot(data = sl, aes(x = xG_ln, y = Goals_ln)) +
 
 
 ggsave(plot = last_plot(),
-       filename = "2021/sl_players/scatter_Goals-xG_ln.png",
+       filename = "2021/sl_players/plot.png",
        dpi = 320, scale = 1, width = 9, height = 6, units = c("in"))
 
 
