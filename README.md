@@ -7,7 +7,7 @@ repo for various #dataviz projects
 
 ## LaLiga domination by Messi and Ronaldo
 
-<a href="https://github.com/jvieroe/dataviz/blob/main/2021/messi_ronaldo/code.R"> Code </a>, </b>: <a href="https://github.com/jvieroe/dataviz/blob/main/2021/messi_ronaldo/plot.png"> Download </a>
+<a href="https://github.com/jvieroe/dataviz/blob/main/2021/messi_ronaldo/code.R"> Code </a>, <a href="https://github.com/jvieroe/dataviz/blob/main/2021/messi_ronaldo/plot.png"> Download </a>
 
 <img src="https://github.com/jvieroe/dataviz/blob/main/2021/messi_ronaldo/plot.png?raw=true" alt="" width="750">
 
