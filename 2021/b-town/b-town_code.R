@@ -48,7 +48,7 @@ ggdraw(ggp) +
 
 ggsave(plot = last_plot(),
        filename = "2021/b-town/b-town_plot.png",
-       dpi = 320, scale = 1, width = 7, height = 7, units = c("in"))
+       dpi = 1000, scale = 1, width = 7, height = 7, units = c("in"))
 
 
 
