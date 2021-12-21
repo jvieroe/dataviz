@@ -66,6 +66,6 @@ ggplot() +
 
 
 ggsave(plot = last_plot(),
-       filename = "2021/b-town/b_town.png",
+       filename = "2021/superliga/plot.png",
        dpi = 320, scale = 1, width = 7, height = 6, units = c("in"))
 
