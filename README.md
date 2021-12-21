@@ -23,7 +23,7 @@ repo for various #dataviz projects
 
 ## Vote share for Venstre at the municipal elections 2017
 
-<a href="https://github.com/jvieroe/dataviz/blob/main/2021/kv2021/code.R"> Code</a>, <a href="https://github.com/jvieroe/dataviz/blob/main/2021/kv2021/plot.png"> Download </a>
+<a href="https://github.com/jvieroe/dataviz/blob/main/2021/kv2021/code.R"> Code</a>, <a href="https://github.com/jvieroe/dataviz/blob/main/2021/kv2021/plot_2017v.png"> Download </a>
 
 <img src="https://github.com/jvieroe/dataviz/blob/main/2021/kv2021/plot_2017v.png?raw=true" alt="" width="750">
 
