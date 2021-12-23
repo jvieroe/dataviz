@@ -18,14 +18,18 @@ osm_highways <- osm %>%
 osm_lines <- osm_highways$osm_lines
 
 col_sand <- "#EFEBDD"
+col_fg <- "dodgerblue4"
 font <- "Oswald"
 
 ggp <- ggplot() +
   geom_sf(data = osm_lines,
-          color = "dodgerblue4") +
+          color = col_fg) +
   theme_void() +
+  labs(caption = "<span style='font-family: \"Font Awesome 5 Brands\"'>&#xf099;</span> jvieroe<br>
+                              <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b;</span> jvieroe") +
   theme(panel.background = element_rect(color = col_sand, fill = col_sand),
-        plot.background = element_rect(color = col_sand, fill = col_sand))
+        plot.background = element_rect(color = col_sand, fill = col_sand),
+        plot.caption = element_markdown(color = col_fg))
 
 ggp
   
@@ -33,18 +37,13 @@ ggdraw(ggp) +
   draw_label(label = "Jyderup",
              x = 0.190, y = 0.90,
              size = 40,
-             fontfamily = "Oswald",
-             color = "dodgerblue4") +
+             fontfamily = font,
+             color = col_fg) +
   draw_label(label = "55°39′36.14″ N, 11°23′55.03″ E",
              x = 0.190, y = 0.815,
              size = 12.5,
-             fontfamily = "Oswald",
-             color = "dodgerblue4") +
-  draw_label(label = "Jeppe Vierø (@Vieroe)",
-             x = 0.91, y = 0.05,
-             size = 10,
-             fontfamily = "Oswald",
-             color = "dodgerblue4")
+             fontfamily = font,
+             color = col_fg)
 
 ggsave(plot = last_plot(),
        filename = "2021/b-town/plot.png",
