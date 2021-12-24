@@ -26,7 +26,9 @@ bif <- bif %>%
 bif <- bif %>% 
   mutate(result = case_when(goals_Brøndby > goals_Opponent ~ "Win",
                             goals_Brøndby == goals_Opponent ~ "Draw",
-                            goals_Brøndby < goals_Opponent ~ "Loss"))
+                            goals_Brøndby < goals_Opponent ~ "Loss")) %>% 
+  mutate(result = factor(result,
+                         levels = c("Loss", "Draw", "Win")))
 
 
 bif <- bif %>% 
@@ -34,6 +36,7 @@ bif <- bif %>%
   mutate(xg_diff_grp = case_when(x_g_Brøndby > x_g_Opponent ~ "Positive",
                                  x_g_Brøndby == x_g_Opponent ~ "Zero",
                                  x_g_Brøndby < x_g_Opponent ~ "Negative")) %>% 
+  mutate(xg_diff_grp = factor(xg_diff_grp, levels = c("Negative", "Zero", "Positive"))) %>% 
   mutate(tmp = 0 - x_g_Opponent)
 
 ggplot(bif) +
