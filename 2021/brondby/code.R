@@ -33,7 +33,8 @@ bif <- bif %>%
   mutate(xg_diff = x_g_Brøndby - x_g_Opponent) %>% 
   mutate(xg_diff_grp = case_when(x_g_Brøndby > x_g_Opponent ~ "Positive",
                                  x_g_Brøndby == x_g_Opponent ~ "Zero",
-                                 x_g_Brøndby < x_g_Opponent ~ "Negative"))
+                                 x_g_Brøndby < x_g_Opponent ~ "Negative")) %>% 
+  mutate(tmp = 0 - x_g_Opponent)
 
 ggplot(bif) +
   geom_bar(aes(x = date, y = x_g_Brøndby),
@@ -41,12 +42,16 @@ ggplot(bif) +
            fill = NA,
            color = "black",
            size = .1) +
-  # geom_bar(aes(x = date, y = x_g_Opponent),
-  #          stat = "identity",
-  #          alpha = 0.3) +
+  geom_bar(aes(x = date, y = tmp),
+           stat = "identity",
+           fill = NA,
+           color = "black",
+           size = .1) +
   geom_bar(aes(x = date, y = xg_diff, fill = result),
            stat = "identity",
            alpha = 0.3,
            color = "black",
            size = .1) +
+  geom_hline(yintercept = 0,
+             size = .25) +
   theme_minimal()
