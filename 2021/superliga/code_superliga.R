@@ -1,6 +1,7 @@
 library(tidyverse)
 library(worldfootballR)
 library(janitor)
+library(ggtext)
 
 sl_table <- tm_matchday_table(country_name = "Denmark",
                               start_year = "2021",
@@ -39,7 +40,8 @@ ggplot() +
        subtitle = "Accumulated points over time (round 0 to 17) in the fall of 2021",
        x = "Round",
        y = "Points (total)",
-       caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: Transfermarkt (accessed via the worldfootballR package)") +
+       caption = "Graphics: Jeppe Vierø (<span style='font-family: \"Font Awesome 5 Brands\"'>&#xf099;</span> / <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b;</span> jvieroe)<br>
+       Data: Transfermarkt (accessed via the worldfootballR package)") +
   theme_minimal() +
   theme(plot.background = element_rect(color = "gray14", fill = "gray14"),
         panel.background = element_rect(color = "gray14", fill = "gray14"),
@@ -60,8 +62,8 @@ ggplot() +
                                   family = "Montserrat"),
         plot.subtitle = element_text(color = "white",
                                      family = "Montserrat"),
-        plot.caption = element_text(color = "gray70",
-                                       family = "Montserrat"),
+        plot.caption = ggtext::element_markdown(color = "gray70",
+                                                family = "Montserrat"),
         legend.position = "none")
 
 
