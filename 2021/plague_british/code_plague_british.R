@@ -2,20 +2,20 @@
 # preliminaries
 # -------------------------------------------------------------
 
-library(rio)
-library(haven)
+# library(rio)
+# library(haven)
 library(tidyverse)
 library(magrittr)
 library(janitor)
 library(sf)
 library(nngeo)
-library(tmap)
+# library(tmap)
 library(rnaturalearth)
 library(rnaturalearthhires)
 library(raster)
-library(sysfonts)
-library(showtext)
-library(svglite)
+# library(sysfonts)
+# library(showtext)
+# library(svglite)
 
 
 # -------------------------------------------------------------
