@@ -13,15 +13,15 @@ match_df <- st_join(kommuner,
                     regioner,
                     join = st_nearest_feature) %>% 
   st_drop_geometry() %>% 
-  select(c(navn.x,
-           regionsnavn))
+  dplyr::select(c(navn.x,
+                  regionsnavn))
 
 
 vs <- rio::import("2021/kv2021/data/Valgdata.csv") %>% 
   clean_names() %>% 
-  select(-c(kreds_nr,
-            stor_kreds_nr,
-            landsdels_nr))
+  dplyr::select(-c(kreds_nr,
+                   stor_kreds_nr,
+                   landsdels_nr))
 
 geo <- read_delim("2021/kv2021/data/Geografiske_stamdata.csv",
                   locale = locale(encoding = "windows-1252")) %>% 
@@ -104,7 +104,8 @@ ggplot(data = plot_df) +
        title = "Vote share for Venstre by municipality (2017)",
        subtitle = "Venstre's worst regional result was in <span style='color:indianred3'>Region Hovedstaden</span> where they received only <span style='color:indianred3'>16%</span> of the votes. <br> Their best regional result was in <span style='color:steelblue3'>Region Midtjylland</span> with a share more than twice as large (<span style='color:steelblue3'>33%</span>)",
        color = "",
-       caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: The Danish Election Database") +
+       caption = "Graphics: Jeppe Vierø (<span style='font-family: \"Font Awesome 5 Brands\"'>&#xf099;</span> / <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b;</span> jvieroe)<br>
+       Data: The Danish Election Database") +
   theme_minimal() +
   theme(axis.text.x = element_blank(),
         axis.title.x = element_blank(),
@@ -120,8 +121,8 @@ ggplot(data = plot_df) +
                                   family = font),
         plot.subtitle = ggtext::element_markdown(color = "white",
                                                  family = font),
-        plot.caption = element_text(color = "gray70",
-                                    family = font),
+        plot.caption = ggtext::element_markdown(color = "gray70",
+                                                family = font),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         panel.grid.major.y = element_line(color = "gray50", size = .3),
