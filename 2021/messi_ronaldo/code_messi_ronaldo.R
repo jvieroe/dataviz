@@ -68,6 +68,10 @@ players <- players %>%
 
 
 
+players %>% 
+  group_by(season_long) %>% 
+  summarize(sum(goals, na.rm = T))
+
 
 # --------------- GET GOAL STATISTICS FOR LA LIGA ---------------
 
