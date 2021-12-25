@@ -2,20 +2,15 @@
 # preliminaries
 # -------------------------------------------------------------
 
-# library(rio)
-# library(haven)
 library(tidyverse)
 library(magrittr)
 library(janitor)
 library(sf)
 library(nngeo)
-# library(tmap)
 library(rnaturalearth)
 library(rnaturalearthhires)
 library(raster)
-# library(sysfonts)
-# library(showtext)
-# library(svglite)
+library(ggtext)
 
 
 # -------------------------------------------------------------
@@ -57,8 +52,8 @@ grid_sf <- grid_sf %>%
 
 # ----- raster data
 hyde_list <- list()
-hyde_list[[1]] <- raster("data/1300AD_pop/popc_1300AD.asc")
-hyde_list[[2]] <- raster("data/1400AD_pop/popc_1400AD.asc")
+hyde_list[[1]] <- raster("2021/plague_british/data/1300AD_pop/popc_1300AD.asc")
+hyde_list[[2]] <- raster("2021/plague_british/data/1400AD_pop/popc_1400AD.asc")
 
 hyde_fun <- function(hyde, hyde_fixed) {
   
@@ -114,7 +109,8 @@ ggplot() +
           fill = "transparent") +
   labs(title = "The Black Death on the \nBritish Isles",
        subtitle = "Net population loss (k), 1300 - 1400",
-       caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: HYDE 3.2") +
+       caption = "Graphics: Jeppe Vierø (<span style='font-family: \"Font Awesome 5 Brands\"'>&#xf099;</span> / <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b;</span> jvieroe)<br>
+       Data: HYDE 3.2") +
   theme_void() +
   theme(legend.position = "bottom",
         plot.title = element_text(color = "white",
@@ -123,16 +119,16 @@ ggplot() +
         plot.subtitle = element_text(color = "white",
                                      size = 10,
                                      family = "Cinzel"),
-        plot.caption = element_text(color = "white",
-                                    size = 7,
-                                    family = "Cinzel",
-                                    vjust = -5,
-                                    hjust = 0),
+        plot.caption = ggtext::element_markdown(color = "white",
+                                                size = 7,
+                                                family = "Cinzel",
+                                                vjust = -5,
+                                                hjust = 0),
         panel.background = element_rect(fill = "gray15",
                                         color = NA),
         plot.background = element_rect(fill = "gray15",
                                        color = NA),
-        plot.margin = grid::unit(c(t = 0, r = 20, b = 5, l = 5), "mm")) +
+        plot.margin = grid::unit(c(t = 0, r = 20, b = 2, l = 5), "mm")) +
   guides(fill = guide_colorbar(barwidth = 15,
                                barheight = .5,
                                ticks = FALSE,
