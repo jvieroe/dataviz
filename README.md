@@ -15,7 +15,7 @@ repo for various #dataviz projects
 
 ## Humble origins
 
-<a href="https://github.com/jvieroe/dataviz/blob/main/2021/b-town/code.R"> Code</a>, <a href="https://github.com/jvieroe/dataviz/blob/main/2021/b-town/plot.png"> Download </a>
+<a href="https://github.com/jvieroe/dataviz/blob/main/2021/b-town/code_b-town.R"> Code</a>, <a href="https://github.com/jvieroe/dataviz/blob/main/2021/b-town/plot.png"> Download </a>
 
 
 <img src="https://github.com/jvieroe/dataviz/blob/main/2021/b-town/plot.png?raw=true" alt="" width="750">
