@@ -187,7 +187,8 @@ ggplot() +
   labs(x = "Season", y = "Share of Total League Goals",
        title = "League Domination by Two Modern Legends",
        subtitle = "Share of all LaLiga goals scored by <span style='color:#C31F48;font-size:20px'>Lionel Messi</span>, <span style='color:#0276ab;font-size:20px'>Cristiano Ronaldo</span>, and <span style='color:#ffbf00;font-size:20px'>combined</span>",
-       caption = "Graphics: Jeppe Vierø (@Vieroe)\nData: Transfermarkt") +
+       caption = "Graphics: Jeppe Vierø (<span style='font-family: \"Font Awesome 5 Brands\"'>&#xf099;</span> / <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b;</span> jvieroe)<br>
+       Data: Transfermarkt") +
   # Messi joins
   geom_curve(aes(x = 0.9, xend = 1.3,
                  y = 0.004, yend = 0.019),
@@ -295,13 +296,10 @@ ggplot() +
            fill = NA, alpha = 1) +
   # theme stuff
   theme_minimal() +
-  theme(plot.title = ggtext::element_markdown(color = "white",
-                                              family = font,
+  theme(plot.title = ggtext::element_markdown(color = "white", family = font,
                                               size = 24),
-        plot.subtitle = ggtext::element_markdown(color = "white",
-                                                 family = font),
-        plot.caption = element_text(color = "gray90",
-                                    family = font),
+        plot.subtitle = ggtext::element_markdown(color = "white", family = font),
+        plot.caption = ggtext::element_markdown(color = "gray90", family = font),
         legend.position = "none",
         panel.background = element_rect(fill = "gray20", color = "gray20"),
         plot.background = element_rect(fill = "gray20", color = "gray20"),
