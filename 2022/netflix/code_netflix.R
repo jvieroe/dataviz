@@ -72,17 +72,6 @@ df <- df %>%
   mutate(cum_sum = cumsum(tally_input))
 
 
-bg_col <- colorspace::lighten(pal[7], 0.8)
-
-
-pal <- rev(met.brewer("Manet", type = "discrete"))
-
-pal <- rev(met.brewer("Renoir", type = "discrete"))
-
-pal <- rev(met.brewer("Monet", type = "discrete"))
-
-
-
 
 ggplot(df) +
   geom_line(aes(x = date, y = cum_sum), size = .1) +
