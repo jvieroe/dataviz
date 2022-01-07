@@ -27,10 +27,10 @@ cycleways_england = opq("England") %>%
   osmdata_sf()
 
 
-cycleways_england = oe_get(
-  "England",
+train_st = oe_get(
+  "Luxembourg",
   quiet = FALSE,
-  query = "SELECT * FROM 'lines' WHERE highway = 'cycleway'"
+  query = "SELECT * FROM 'lines' WHERE public_transport = 'station'"
 )
 
 
