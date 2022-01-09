@@ -39,7 +39,7 @@ china <- maps_reproj %>%
 st_bbox(china)
 
 ggplot() +
-  geom_sf(data = maps_reproj, size = 0.2, color = "#06216E") +
+  geom_sf(data = maps_union, size = 0.2, color = "#06216E") +
   geom_sf(data = ming_reproj, size = 0.2, color = "#06216E") +
   coord_sf(xlim = c(-1253835, 4272399),
            ylim = c(-1760275, 2876833)) +
