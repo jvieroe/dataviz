@@ -1,95 +1,142 @@
-# https://dawadocs.dataforsyningen.dk/dok/api/generelt#flervaerdisoegning
-# https://dawadocs.dataforsyningen.dk/dok/bbr#find-en-enhed-ud-fra-dens-adresse
-
-
 library(tidyverse)
+library(janitor)
 library(httr)
+library(sf)
+library(tmap)
 
-rm(list=ls())
-
-#url <- "https://services.datafordeler.dk/BBR/BBRPublic/1/REST/"
-
-
-url <- "https://api.dataforsyningen.dk/adresser?kommunekode=0101|0147&husnr=187"
-url <- "https://api.dataforsyningen.dk/adresser?kommunekode=0101|0147"
-
-#url <- "https://api.dataforsyningen.dk/kommuner?format=csv&download"
-
-
-#url <- "https://api.dataforsyningen.dk/adresser?kommunekode=0101|0147&husnr=177?format=json"
-#url <- "https://api.dataforsyningen.dk/adresser?kommunekode=0101|0147"
-
-raw <- GET(url)
-http_status(raw)
-
-text <- content(raw)
-
-test <- text[[1]]
-
-
-df <- test[[10]] %>% unlist() %>% enframe()
+tmap_mode("view")
 
 
 
-test$adgangsadresse$adgangspunkt$id
+# ---------------------------------------------------------------------------
+# Load data
+# ---------------------------------------------------------------------------
 
+# ----- Map of Danish municipalities
+muni_url <- "https://api.dataforsyningen.dk/kommuner/?format=geojson"
+municipality <- read_sf(muni_url)
 
+st_crs(municipality)
 
-u2 <- "https://api.dataforsyningen.dk/bbrlight/opgange?adgangsadresseid=0a3f507a-e179-32b8-e044-0003ba298018"
-u2 <- "https://api.dataforsyningen.dk/bbrlight/opgange?adgangsadresseid=24ce39ab-b0d5-4e34-97f3-a1efe3d6bb2a"
-
-d2 <- GET(u2)
-http_status(d2)
-d2 <- content(d2)
+municipality <- municipality %>% 
+  st_transform(crs = 4326)
 
 
 
 
+# ----- Housing in Copenhagen
+building_url <- "https://api.dataforsyningen.dk/bbrlight/bygninger?kommunekode=0101|0147"
+
+buildings <- httr::GET(building_url)
+http_status(buildings)
+
+buildings <- content(buildings)
 
 
-href <- test$href
+# Test inspection
+test <- buildings[[100]]
+test$OPFOERELSE_AAR
+test$bygningspunkt$koordinater[[1]]
+test$bygningspunkt$koordinater[[2]]
 
-bbr <- GET(href)
-http_status(bbr)
-bbr <- content(bbr)
+rm(test)
 
-
-bbr <- GET("https://api.dataforsyningen.dk/bbrlight/bygninger?id=9a837c75-a4d4-4a0a-8379-0b76ab654265")
-http_status(bbr)
-bbr <- content(bbr)
-
-
-
-
-
-test[[1]]
-
-tt <- unique(rapply(test, function(x) head(x, 1))) %>% 
-  t() %>% 
-  as.data.frame() %>% 
-  tibble()
-
-test <- test[[10]]
-
-
-
-#test <- bind_rows(test)
-
-tt <- unique(rapply(test, function(x) head(x, 1)))
-
-
-extract_fun <- function(input, output) {
+fun_year <- function(input, year) {
   
-  output <- unique(rapply(input, function(x) head(x, 1))) %>% 
-    t() %>% 
-    as.data.frame() %>% 
-    tibble() %>% 
-    select(c(V28, V29))
+  year <- input$OPFOERELSE_AAR
+  
+  return(year)
   
 }
 
-df <- map(.x = text,
-          .f = extract_fun) %>% 
-  bind_rows(.id = "id")
 
+fun_coords <- function(input, coords) {
+  
+  coords <- tibble(
+    lon = input$bygningspunkt$koordinater[[1]],
+    lat = input$bygningspunkt$koordinater[[2]],
+  )
+  
+  return(coords)
+  
+}
+
+
+
+year <- map_int(.x = buildings, .f = fun_year)
+
+df_year <- tibble(
+  id = 1:length(year),
+  year = year
+)
+
+
+coords <- map_dfr(.x = buildings,
+                  .f = fun_coords)
+
+coords <- coords %>% 
+  mutate(id = 1:length(buildings))
+
+
+
+df <- coords %>% 
+  tidylog::left_join(.,
+                     df_year,
+                     by = "id")
+
+
+
+df_sf <- df %>% 
+  st_as_sf(coords = c("lon", "lat"),
+           crs = 4326)
+
+df_sf <- df_sf %>% 
+  st_crop(municipality)
+
+tm_shape(df_sf) +
+  tm_dots(size = 0.00001)
+
+
+hist(df$year)
+
+
+
+df_sf <- df_sf %>% 
+  mutate(year = ifelse(year > 0,
+                       year,
+                       NA))
+
+hist(df_sf$year)
+
+df_sf <- df_sf %>% 
+  mutate(year_cat = case_when(year < 1900 ~ "< 1900",
+                              year %in%  seq(1900, 1950, 1) ~ "1900-1950",
+                              year %in%  seq(1951, 2000, 1) ~ "1951-2000",
+                              year > 2000 ~ "> 2000",))
+
+tabyl(is.na(df_sf$year))
+tabyl(is.na(df_sf$year_cat))
+
+
+library(rnaturalearthdata)
+library(rnaturalearth)
+
+base_map <- rnaturalearth::ne_countries(scale = "large") %>% 
+  st_as_sf()
+
+base_map <- base_map %>% 
+  filter(admin == "Denmark")
+
+ggplot() +
+  geom_sf(data = base_map)
+
+
+cph <- municipality %>% 
+  filter(navn %in% c("København", "Frederiksberg"))
+
+ggplot() +
+  geom_sf(data = df_sf, aes(color = year_cat),
+          size = .01, alpha = .5) +
+  theme_void() +
+  guides(colour = guide_legend(override.aes = list(size = 10)))
 
