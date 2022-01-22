@@ -134,9 +134,15 @@ ggplot() +
 cph <- municipality %>% 
   filter(navn %in% c("København", "Frederiksberg"))
 
+muni <- municipality %>% 
+  st_drop_geometry()
+
 ggplot() +
   geom_sf(data = df_sf, aes(color = year_cat),
           size = .01, alpha = .5) +
   theme_void() +
   guides(colour = guide_legend(override.aes = list(size = 10)))
 
+
+ggsave(plot = last_plot(),
+       "2022/cph_housing/plot_cph_housing.png")
