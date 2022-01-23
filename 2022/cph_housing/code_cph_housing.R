@@ -63,7 +63,8 @@ fun_coords <- function(input, coords) {
 
 
 
-year <- map_int(.x = buildings, .f = fun_year)
+year <- map_int(.x = buildings,
+                .f = fun_year)
 
 df_year <- tibble(
   id = 1:length(year),
