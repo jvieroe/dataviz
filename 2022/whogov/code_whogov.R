@@ -38,9 +38,6 @@ url <- "https://api.dataforsyningen.dk/supplerendebynavne2"
 cities <- httr::GET(url) %>% 
   content(.)
 
-
-cities <- cities
-
 # byer <- content(byer)
 # 
 # b1 <- byer[[1]]
