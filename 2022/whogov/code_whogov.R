@@ -2,6 +2,7 @@ library(tidyverse)
 library(sf)
 library(janitor)
 library(ggtext)
+library(httr)
 
 # --------------- load WhoGov data ---------------
 # whogov_cs <- readxl::read_xlsx("2022/whogov/data/Denmark.xlsx")
@@ -33,29 +34,60 @@ locations
 
 url <- "https://api.dataforsyningen.dk/supplerendebynavne2"
 
-library(httr)
-byer <- httr::GET(url)
 
-byer <- content(byer)
-
-b1 <- byer[[1]]
-
-b1$navn
-b1$kommune$kode
-b1$kommune$navn
+cities <- httr::GET(url) %>% 
+  content(.)
 
 
-extract_func <- function(input, name, municipality, cooords) {
+cities <- cities
+
+# byer <- content(byer)
+# 
+# b1 <- byer[[1]]
+# 
+# b1$navn
+# b1$kommune$kode
+# b1$kommune$navn
+# b1$postnumre
+# 
+# zips <- b1$postnumre[[1]]
+# zips$nr
+# zips$navn
+# 
+# rm(coordss)
+# coordss <- b1$visueltcenter[[1]]
+# coordss
+
+extract_func <- function(input, name, municipality, temp, zips, cooords, df) {
   
   name <- input$navn
   
-  muni_code <- input$kommune$kode
-  muni_name <- input$kommune$navn
+  municipality <- tibble(muni_code = input$kommune$kode,
+                         muni_name = input$kommune$navn)
   
+  temp <- input$postnumre[[1]]
   
+  zips <- tibble(zip_code = temp$nr,
+                 zip_name = temp$navn)
+  
+  coords <- tibble(lat = input$visueltcenter[[2]],
+                   lon = input$visueltcenter[[1]])
+  
+  df <- cbind(municipality,
+              zips,
+              coords) %>% 
+    tibble() %>% 
+    mutate(city_name = name)
+  
+  return(df)
+  
+  rm(name, municipality, temp, zips, coords, df)
   
 }
 
+
+city_list <- map(cities,
+                 extract_func)
 
 
 
