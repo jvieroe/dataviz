@@ -92,12 +92,14 @@ city_df <- city_df %>%
 # --------------- merge data ---------------
 locations <- whogov %>% 
   filter(!is.na(placeofbirth)) %>% 
-  select(placeofbirth)
+  select(placeofbirth) %>% 
+  distinct(., placeofbirth)
 
 
 locations %>% filter(placeofbirth == "Aarhus")
+city_df %>% filter(city == "Aarhus")
 
-locations %>% 
+rest <- locations %>% 
   filter(!placeofbirth %in% city_df$city) %>% 
   filter(!placeofbirth %in% city_df$muni_name)
 
