@@ -23,17 +23,10 @@ library(httr)
 
 whogov <- readxl::read_xlsx("2022/whogov/data/Denmark.xlsx")
 
-locations <- whogov %>% 
-  filter(!is.na(placeofbirth)) %>% 
-  pull(placeofbirth) %>% 
-  as.character()
-
-locations
 
 
-
+# --------------- load cities data ---------------
 url <- "https://api.dataforsyningen.dk/supplerendebynavne2"
-
 
 cities <- httr::GET(url) %>% 
   content(.)
@@ -62,15 +55,20 @@ extract_func <- function(input, name, municipality, cooords, df) {
 
 
 
-c1 <- cities[[1]]
-c2 <- cities[[2]]
 
-temp_list <- list(c1, c2)
-
-city_list <- map(cities,
-                 extract_func)
+city_df <- map_dfr(cities,
+                   extract_func)
 
 
-city_df <- bind_rows(city_list)
+# --------------- merge data ---------------
+locations <- whogov %>% 
+  filter(!is.na(placeofbirth)) %>% 
+  select(placeofbirth)
 
-city_df
+
+locations %>% 
+  filter(!placeofbirth %in% city_df$city_name)
+
+
+
+
