@@ -60,6 +60,19 @@ city_df <- map_dfr(cities,
                    extract_func)
 
 
+city_df <- city_df %>% 
+  mutate(city = city_name) %>% 
+  mutate(city = ifelse(muni_code == "0101",
+                       "København",
+                       city)) %>% 
+  mutate(city = ifelse(city == "Århus",
+                       "Aarhus",
+                       city))
+
+city_df <- city_df %>% 
+  arrange(city)
+
+
 # --------------- merge data ---------------
 locations <- whogov %>% 
   filter(!is.na(placeofbirth)) %>% 
@@ -67,8 +80,11 @@ locations <- whogov %>%
 
 
 locations %>% 
-  filter(!placeofbirth %in% city_df$city_name)
+  filter(!placeofbirth %in% city_df$city)
 
 
+temp <- city_df %>% 
+  mutate(muni_code = as.numeric(muni_code))
 
+city_df %>% filter(muni_code == "0101")
 
