@@ -3,6 +3,9 @@ library(sf)
 library(janitor)
 library(ggtext)
 library(httr)
+library(tmap)
+
+tmap_mode("view")
 
 # --------------- load WhoGov data ---------------
 # whogov_cs <- readxl::read_xlsx("2022/whogov/data/Denmark.xlsx")
@@ -60,12 +63,25 @@ city_df <- map_dfr(cities,
                    extract_func)
 
 
+temp <- city_df %>% 
+  st_as_sf(coords = c("lon", "lat"),
+           crs = 4326)
+
+tm_shape(temp) +
+  tm_dots()
+
+city_df %>% filter(muni_name == "Gentofte")
+city_df %>% filter(city == "Aarhus")
+
 city_df <- city_df %>% 
   mutate(city = city_name) %>% 
   mutate(city = ifelse(muni_code == "0101",
                        "København",
                        city)) %>% 
-  mutate(city = ifelse(city == "Århus",
+  mutate(city = ifelse(muni_code == "0751",
+                       "Aarhus",
+                       city)) %>% 
+  mutate(city = ifelse(muni_code == "0751",
                        "Aarhus",
                        city))
 
@@ -79,8 +95,11 @@ locations <- whogov %>%
   select(placeofbirth)
 
 
+locations %>% filter(placeofbirth == "Aarhus")
+
 locations %>% 
-  filter(!placeofbirth %in% city_df$city)
+  filter(!placeofbirth %in% city_df$city) %>% 
+  filter(!placeofbirth %in% city_df$muni_name)
 
 
 temp <- city_df %>% 
