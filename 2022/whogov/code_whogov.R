@@ -38,31 +38,6 @@ url <- "https://api.dataforsyningen.dk/supplerendebynavne2"
 cities <- httr::GET(url) %>% 
   content(.)
 
-b1 <- cities[[1]]
-
-
-b1$navn
-b1$kommune$kode
-b1$kommune$navn
-b1$postnumre
-
-
-zips <- b1$postnumre
-zips
-
-zips <- b1$postnumre[[1]]
-zips
-length(b1$postnumre)
-
-zips$nr
-zips$navn
-
-rm(coords)
-coords <- b1$visueltcenter[[1]]
-coords
-
-rm(b1, zips,
-   coords)
 
 extract_func <- function(input, name, municipality, cooords, df) {
   
@@ -73,20 +48,6 @@ extract_func <- function(input, name, municipality, cooords, df) {
   
   coords <- tibble(lat = input$visueltcenter[[2]],
                    lon = input$visueltcenter[[1]])
-  
-  # if (length(input$postnumre == 3)) {
-  #   
-  #   temp <- input$postnumre[[1]]
-  #   
-  #   zips <- tibble(zip_code = temp$nr,
-  #                  zip_name = temp$navn)
-  #   
-  # } else if (length(input$postnumre != 3)) {
-  #   
-  #   zips <- tibble(zip_code = NA,
-  #                  zip_name = NA)
-  #   
-  # }
   
   df <- cbind(municipality,
               coords) %>% 
