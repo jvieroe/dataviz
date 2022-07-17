@@ -1,9 +1,8 @@
 library(tidyverse)
 library(janitor)
 library(lubridate)
-# library(geomtextpath)
-# library(ggrepel)
-
+library(ggtext)
+library(scales)
 
 rm(list = ls())
 
@@ -95,13 +94,6 @@ date_min <- big3_range %>%
   slice(which.min(year)) %>%
   pull(year)
 
-# date_min <- big3_range %>%
-#   group_by(value) %>%
-#   slice(which.min(date)) %>%
-#   ungroup() %>%
-#   slice(which.max(year)) %>%
-#   pull(year)
-
 date_min
 
 
@@ -158,12 +150,6 @@ date_range <- date_range %>%
                      by = 'date') %>% 
   mutate(year = year(date))
 
-# date_range <- date_range %>% 
-#   fill(other, .direction = "down") %>% 
-#   fill(federer, .direction = "down") %>% 
-#   fill(nadal, .direction = "down") %>% 
-#   fill(djokovic, .direction = "down")
-
 
 date_range <- date_range %>% 
   mutate(across(c(other, federer, nadal, djokovic),
@@ -189,42 +175,10 @@ plot_df %>%
 
 
 
-
-
-plot_df %>% 
-  filter(name == 'Other') %>% 
-  filter(date == ymd('2005-01-01'))
-
-plot_df %>% 
-  filter(name == 'Other') %>% 
-  filter(date == max(date))
-
-
-
-
-
-plot_df %>% 
-  filter(name != 'Other') %>% 
-  filter(date == ymd('2005-01-01')) %>% 
-  summarize(sum(value))
-
-plot_df %>% 
-  filter(name != 'Other') %>% 
-  filter(date == max(date)) %>% 
-  summarize(sum(value))
-
-
 plot_df <- plot_df %>% 
   group_by(name) %>% 
   mutate(value_lead = dplyr::lead(value, 1)) %>% 
   ungroup()
-
-
-# plot_df %>% 
-#   ggplot(., aes(x = date, y = value, group = name)) +
-#   geomtextpath::geom_textpath(aes(color = name,
-#                                   label = name)) +
-#   theme_minimal()
 
 
 plot_df %>% 
@@ -245,23 +199,136 @@ plot_df %>%
   theme_minimal()
 
 
-plot_df <- plot_df %>% 
-  filter(value_lead > 0)
+plot_df <- plot_df %>%
+  filter(value_lead > 0 | is.na(value_lead))
 
 label_df <- plot_df %>% 
   group_by(name) %>% 
-  slice(which.max(date)) %>% 
+  slice(which.min(date)) %>% 
   ungroup()
 
+
+
+
+gs_05 <- win_count %>% filter(date > ymd("2005-01-01"))
+tabyl(gs_05, winner)
+gs_05 %>% summarise(sum(n()))
+
+
+
+cols <- MetBrewer::met.brewer('Signac', type = 'discrete')
+show_col(cols)
+pal <- cols[c(12, 5, 3, 13)]
+bgk <- cols[11]
+
+show_col(pal)
+
+col_other <- pal[4]
+col_federer <- pal[2]
+col_nadal <- pal[3]
+col_djokovic <- pal[1]
+
+
+
+font <- "Merriweather Sans"
+
 ggplot() +
+  annotate("rect",
+           xmin = ymd("2005-01-01"),
+           xmax = max(plot_df$date),
+           ymin = 24,
+           ymax = 35,
+           fill = "gray50", alpha = .2) +
   geom_line(data = plot_df, aes(x = date, y = value,
-                                group = name, color = name)) +
-  geom_label(data = label_df, aes(x = date, y = value,
-                                  group = name, color = name,
-                                  label = name)) +
+                                group = name, color = name),
+            size = .65) +
+  scale_color_manual(values = pal) +
+  scale_x_date(date_breaks = '2 years',
+               date_labels = '%Y') +
+  scale_y_continuous(breaks = seq(0, 35, 5),
+                     labels = seq(0, 35, 5),
+                     expand = c(0, 0.5)) +
+  # geom_label(data = label_df, aes(x = date, y = value,
+  #                                 group = name, color = name,
+  #                                 label = name)) +
   # geom_label_repel(data = label_df,
   #                  aes(x = date, y = value,
   #                      group = name, color = name,
-  #                      label = name)) +
-  theme_minimal() + 
-  theme(legend.position = "none")
+  #                      label = name),
+  #                  nudge_x = -5,
+  #                  seed = 423) +
+  annotate("richtext", x = ymd("2010-01-01"), y = 31.5,
+           label = "Since Jan. 1st 2005, only 11 out of 70 <br>Grand Slams have been won by a <br> player outside the Big Three",
+           family = font,
+           size = 4,
+           label.color = NA,
+           text.color = col_other,
+           fill = NA, alpha = 1) +
+  annotate("richtext", x = ymd("2018-06-01"), y = 27,
+           label = "... in the meantime, <span style='color:#9b3441'>Federer (16)</span>,<br><span style='color:#fe9b00'>Nadal (22)</span>, and <span style='color:#1f6e9c'>Djokovic (21)</span> <br>have come combined for a total of
+           <br><span style='font-size:20px'>59 Grand Slam titles</span>",
+           family = font,
+           size = 4,
+           label.color = NA,
+           text.color = col_other,
+           fill = NA, alpha = 1) +
+  annotate("richtext", x = ymd("2015-01-01"), y = 17.75,
+           label = "Federer",
+           family = font,
+           size = 4.5,
+           label.color = NA,
+           text.color = col_federer,
+           fill = NA, alpha = 1) +
+  annotate("richtext", x = ymd("2016-03-01"), y = 14.75,
+           label = "Nadal",
+           family = font,
+           size = 4.5,
+           label.color = NA,
+           text.color = col_nadal,
+           fill = NA, alpha = 1) +
+  annotate("richtext", x = ymd("2017-09-01"), y = 11.25,
+           label = "Djokovic",
+           family = font,
+           size = 4.5,
+           label.color = NA,
+           text.color = col_djokovic,
+           fill = NA, alpha = 1) +
+  labs(y = "Cumulative number of Grand Slams won",
+       x = NULL,
+       title = "The Big Three: 17 years of Dominance",
+       subtitle = "Cumulative number of Grand Slam Men's Singles Titles won by
+       <span style='color:#9b3441'>Federer</span>, 
+       <span style='color:#fe9b00'>Nadal</span>, 
+       <span style='color:#1f6e9c'>Djokovic</span>, and 
+       <span style='color:#2b9b81'>everyone else</span> <br>since Federer made his ATP debut in 1998
+       ",
+       caption = "Graphics: Jeppe Vierø | <span style='font-family: \"Font Awesome 5 Brands\"'> &#xf099;</span> &emsp; <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b; &emsp; &emsp; </span> jvieroe | Data:  <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b; &emsp; </span> JeffSackmann/tennis_atp") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        plot.background = element_rect(fill = "grey85",
+                                       color = NULL),
+        panel.grid.minor.y = element_blank(),
+        #panel.grid.minor = element_blank(),
+        # panel.background = element_rect(fill = "grey90",
+        #                                 color = NULL),
+        axis.text.y = element_text(margin = ggplot2::margin(l = 10),
+                                   family = font),
+        axis.text.x = element_text(margin = ggplot2::margin(b = 0),
+                                   family = font),
+        axis.title = element_text(family = font,
+                                  size = 12),
+        plot.title = ggtext::element_markdown(family = font,
+                                              size = 24),
+        plot.subtitle = ggtext::element_markdown(family = font,
+                                                 size = 12),
+        plot.caption = ggtext::element_markdown(family = font,
+                                                size = 8,
+                                                hjust = .5,
+                                                margin = ggplot2::margin(t = 10)),
+        plot.margin = ggplot2::margin(t = 20,
+                                      b = 10,
+                                      l = 10))
+
+
+
+ggsave(filename = "2022/grand_slam/grand_slam.png")
