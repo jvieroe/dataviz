@@ -4,7 +4,6 @@ library(lubridate)
 library(ggtext)
 library(scales)
 
-rm(list = ls())
 
 
 # -----------------------------------------------------------------------------
