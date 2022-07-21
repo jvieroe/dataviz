@@ -284,8 +284,8 @@ ggplot() +
        subtitle = "Cumulative number of Grand Slam Men's Singles Titles won by
        <span style='color:#9b3441'>Federer</span>, 
        <span style='color:#fe9b00'>Nadal</span>, 
-       <span style='color:#1f6e9c'>Djokovic</span>, and 
-       <span style='color:#2b9b81'>everyone else</span> <br>since Federer made his ATP debut in 1998
+       <span style='color:#1f6e9c'>Djokovic</span>,<br>and 
+       <span style='color:#2b9b81'>everyone else</span> since Federer made his ATP debut in 1998
        ",
        caption = "Graphics: Jeppe Vierø | <span style='font-family: \"Font Awesome 5 Brands\"'> &#xf099;</span> &emsp; <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b; &emsp; &emsp; </span> jvieroe | Data: <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b; &emsp; </span> JeffSackmann/tennis_atp") +
   theme_minimal() +
