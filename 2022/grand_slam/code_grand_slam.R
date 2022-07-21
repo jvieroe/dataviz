@@ -143,7 +143,10 @@ date_range <- win_count %>%
   mutate(date = case_when(id == 1 ~ date - days(1),
                           TRUE ~ date)) %>% 
   select(-id) %>% 
+  bind_rows(., tibble(date = ymd(Sys.Date()))) %>% 
   expand(date = full_seq(date, 1))
+
+tibble(date = ymd(Sys.Date()))
 
 date_range <- date_range %>% 
   tidylog::left_join(., win_count,
@@ -179,24 +182,6 @@ plot_df <- plot_df %>%
   group_by(name) %>% 
   mutate(value_lead = dplyr::lead(value, 1)) %>% 
   ungroup()
-
-
-plot_df %>% 
-  ggplot(., aes(x = date, y = value, group = name)) +
-  geom_line(aes(color = name)) +
-  theme_minimal()
-
-plot_df %>% 
-  filter(value > 0) %>% 
-  ggplot(., aes(x = date, y = value, group = name)) +
-  geom_line(aes(color = name)) +
-  theme_minimal()
-
-plot_df %>% 
-  filter(value_lead > 0 | is.na(value_lead)) %>% 
-  ggplot(., aes(x = date, y = value, group = name)) +
-  geom_line(aes(color = name)) +
-  theme_minimal()
 
 
 plot_df <- plot_df %>%
@@ -302,7 +287,7 @@ ggplot() +
        <span style='color:#1f6e9c'>Djokovic</span>, and 
        <span style='color:#2b9b81'>everyone else</span> <br>since Federer made his ATP debut in 1998
        ",
-       caption = "Graphics: Jeppe Vierø | <span style='font-family: \"Font Awesome 5 Brands\"'> &#xf099;</span> &emsp; <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b; &emsp; &emsp; </span> jvieroe | Data:  <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b; &emsp; </span> JeffSackmann/tennis_atp") +
+       caption = "Graphics: Jeppe Vierø | <span style='font-family: \"Font Awesome 5 Brands\"'> &#xf099;</span> &emsp; <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b; &emsp; &emsp; </span> jvieroe | Data: <span style='font-family: \"Font Awesome 5 Brands\"'>&#xf09b; &emsp; </span> JeffSackmann/tennis_atp") +
   theme_minimal() +
   theme(legend.position = "none",
         plot.background = element_rect(fill = "grey85",
