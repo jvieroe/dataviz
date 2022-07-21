@@ -223,7 +223,7 @@ ggplot() +
            xmax = max(plot_df$date),
            ymin = 24,
            ymax = 35,
-           fill = "gray50", alpha = .2) +
+           fill = "gray50", alpha = .35) +
   geom_line(data = plot_df, aes(x = date, y = value,
                                 group = name, color = name),
             size = .65) +
@@ -233,15 +233,6 @@ ggplot() +
   scale_y_continuous(breaks = seq(0, 35, 5),
                      labels = seq(0, 35, 5),
                      expand = c(0, 0.5)) +
-  # geom_label(data = label_df, aes(x = date, y = value,
-  #                                 group = name, color = name,
-  #                                 label = name)) +
-  # geom_label_repel(data = label_df,
-  #                  aes(x = date, y = value,
-  #                      group = name, color = name,
-  #                      label = name),
-  #                  nudge_x = -5,
-  #                  seed = 423) +
   annotate("richtext", x = ymd("2010-01-01"), y = 31.5,
            label = "Since Jan. 1st 2005, only 11 out of 70 <br>Grand Slams have been won by a <br> player outside the Big Three",
            family = font,
@@ -293,9 +284,6 @@ ggplot() +
         plot.background = element_rect(fill = "grey85",
                                        color = NULL),
         panel.grid.minor.y = element_blank(),
-        #panel.grid.minor = element_blank(),
-        # panel.background = element_rect(fill = "grey90",
-        #                                 color = NULL),
         axis.text.y = element_text(margin = ggplot2::margin(l = 10),
                                    family = font),
         axis.text.x = element_text(margin = ggplot2::margin(b = 0),
